@@ -1,5 +1,7 @@
 # The main parts of the 5th network layer
 
+The main idea: we have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response.
+
 ## The route
 
 The route describes all backend endpoints. The route is a __enum__ where each case includes method (get, post, put), path (for example: `/v1/projects`) and query (for example: `name=arsen&age=26`).
@@ -82,7 +84,7 @@ extension News: Storable {
 It provides to developers hight level API for access to all endpoints. It contains a bunch of functions that represent each endpoint.
 
 ``` swift
-let request = Provider.fetchNews(scoped: .wallet) { result in
+let request = provider.fetchNews(scoped: .wallet) { result in
     switch result {
     case .success(news):
         print(news) // array of News
