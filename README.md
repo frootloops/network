@@ -36,7 +36,7 @@ enum Route {
 
 ## The models
 
-A model is a struct that we use to represent any response from backend. Any response can be represent as one model or as an array of models.
+A model is a struct that we use to represent any response from backend. Any response can be represented as one model or as an array of models.
 
 Each model knows how to instantiate itself from JSON and how to represent itself to be saved into CoreData.
 
