@@ -99,6 +99,8 @@ In that case we know that `/api/news` returns an array of news model. So the pro
 
 ___
 
+## Other topics
+
 ### Plug-ins
 It's a very powerful mechanism that gives you ability to observe  all requests and responses. The most obvious case it's logging http requests.
 
