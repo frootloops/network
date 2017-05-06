@@ -94,6 +94,24 @@ let request = Provider.fetchNews(scoped: .wallet) { result in
 
 In that case we know that `/api/news` returns an array of news model. So the provider will parse the response and create a bunch of __News__ models (that we defined before) and pass it to the completion handler.
 
+### Logout and 2FA cases
+The provider is creating with a block that will be called when each response has arrived. It's a place where all logout/2FA logic live.
+
+``` swift
+let responseClosure = { (endpoint: Route, done: URLRequest, URLRespone -> Void) in
+    let request = endpoint.urlRequest
+    // now we can check status code of response and if it's a case we can logout the user
+    
+    // or if it's time to make 2FA we can hold `done` callback and when we know for sure that user authorised the request we can pass a response back to `done` callback
+    
+    2FA.signRequest(request, completion: { request, respone in
+      done(request, respone)
+    })
+}
+let provider = Provider(responseClosure: responseClosure)
+```
+
+
 ___
 
 The network layer will be distributed as a framework. It can be used within deferent targets such as iOS Application, watchOS application and iOS extensions.
