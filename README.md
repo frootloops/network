@@ -1,6 +1,6 @@
 # The main parts of the 5th network layer
 
-The main idea: we have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response.
+The main idea: we have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response. You can use the same approach to provide auth token and save models to CoreData.
 
 ## The route
 
@@ -98,6 +98,24 @@ In that case we know that `/api/news` returns an array of news model. So the pro
 
 ___
 
+### Plug-ins
+It's a very powerful mechanism that gives you ability to observe  all requests and responses. The most obvious case it's logging http requests.
+
+```swift
+
+class NetworkLoggerPlugin: PluginType {
+    public func willSend(_ request: RequestType, target: TargetType) {
+        print(request)
+    }
+
+    public func didReceive(_ result: Result<Response, NSError>, target: TargetType) {
+        print(result)
+    }
+}
+
+let provider = Provider(plugins: [NetworkLoggerPlugin()])
+```
+
 ### Logout and 2FA cases
 The provider is creating with a block that will be called when each response has arrived. It's a place where all logout/2FA logic live.
 
@@ -116,7 +134,7 @@ let provider = Provider(responseClosure: responseClosure)
 ```
 
 
-## Objective-C compatibility
+### Objective-C compatibility
 It's possible to make the provider compatible with Objective-C by providing alternative interface for APIs. For example:
 
 ``` swift
@@ -129,7 +147,7 @@ func fetchNews(scoped: String, success: @escaping ([News]) -> Void, failure: @es
 // Now it's compatible with Objective-C
 ```
 
-## CoreData
+### CoreData
 
 Because each model implemented `Storable` protocol we can easily story all responses in CoreData. It can be done by something like this:
 
