@@ -112,6 +112,19 @@ let provider = Provider(responseClosure: responseClosure)
 ```
 
 
+## Ojective-C compatibility
+It's possible to make the provider compatible with Ojective-C by providing alternative interface for APIs. For example:
+
+``` swift
+// swift API. It's not compatible with Objective-C
+func fetchNews(scoped: News.Scope, completion: @escaping (Result<[News], NSError>) -> Void) -> Request
+
+// But it can be represented as following:
+func fetchNews(scoped: String, success: @escaping ([News]) -> Void, failer: @escaping (NSError) -> Void) -> Request
+
+// Now it's compatible with Objective-C
+```
+
 ___
 
 The network layer will be distributed as a framework. It can be used within deferent targets such as iOS Application, watchOS application and iOS extensions.
