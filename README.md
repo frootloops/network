@@ -1,6 +1,6 @@
 # The main parts of the 5th network layer
 
-The main idea: we have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response. You can use the same approach to provide auth token and save models to CoreData.
+The main idea: we'll have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response. You can use the same approach to provide auth token and save models to CoreData.
 
 ## The route
 
