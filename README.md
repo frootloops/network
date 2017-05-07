@@ -13,17 +13,15 @@ Example of a provider:
 
 ``` swift
 class Provider {
-	init(endpointClosure: @escaping EndpointClosure,
+init(endpointClosure: @escaping EndpointClosure,
                 requestClosure: @escaping RequestClosure,
                 plugins: [PluginType] = []) {}
 
-		@discardableResult
-    func viewOffer(offerId: Int, completion: @escaping (Result<Offer, NSError>) -> Void = { _ in }) -> Cancellable {
+    func viewOffer(offerId: Int, completion: @escaping (Result<Offer, NSError>) -> Void) -> Request {
 	    ... 
     }
     
-    @discardableResult
-    func importFacebook(contacts: [String], completion: @escaping (Result<[ImportedContact], NSError>) -> Void) -> Cancellable {
+    func importFacebook(contacts: [String], completion: @escaping (Result<[ImportedContact], NSError>) -> Void) -> Request {
         ....
     }
 }
