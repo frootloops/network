@@ -82,10 +82,12 @@ extension News: Storable {
 
 ## The provider
 
+__The provider is the core of the layer.__ It's a instance of a class that describes all endpoints. (Yes, there will be a lot of lines but don't be scarry, it's for good) That instance has a few callback that give you single point of access to all requests.
+
 It provides to developers hight level API for access to all endpoints. It contains a bunch of functions that represent each endpoint.
 
 ``` swift
-let request = provider.fetchNews(scoped: .wallet) { result in
+let request = provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in
     switch result {
     case .success(news):
         print(news) // array of News
@@ -97,6 +99,18 @@ let request = provider.fetchNews(scoped: .wallet) { result in
 
 In that case we know that `/api/news` returns an array of news model. So the provider will parse the response and create a bunch of __News__ models (that we defined before) and pass it to the completion handler.
 
+Those methods do not have direct access to server response. It prevents us from putting logic inside completion block and force  us to do so inside provider (DRY pattern). If your endpoint returns two different type of models (for example it's an array of news and one user model) you just need pass a tuple into completion block.
+
+``` swift
+let request = provider.fetchNews(scoped: .wallet) { result: Result<(User, [News]), NSError> in
+    switch result {
+    case .success(user, news):
+        print(user, news) // array of News
+    case .failure(error):
+        print(error) // NSError
+    }
+}
+```
 ___
 
 ## Other topics
