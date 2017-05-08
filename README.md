@@ -5,7 +5,7 @@ The main idea: we'll have a __single__ provider that gives access to all our end
 
 ## The provider
 
-__The provider is the core of the layer.__ It's a instance of a class that describes all endpoints. (Yes, there will be a lot of lines but don't be scarry, it's for good) That instance has a few callback that give you single point of access to all requests.
+__The provider is the core of the layer.__ It's a instance of a class that describes all endpoints. That instance has a few callback that give you single point of access to all requests.
 
 It provides to developers hight level API for access to all endpoints. It contains a bunch of functions that represent each endpoint.
 
