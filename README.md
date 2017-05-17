@@ -1,18 +1,18 @@
 # The 5-th network layer
-The main idea: we'll have a __single__ provider that gives access to all our endpoints by providing endpoint-specific functions (for example: `provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response. You can use the same approach to provide auth token and save models to CoreData.
+The main idea: we'll have *bunch* of providers that gives access to all our endpoints. Each provider will have domainand endpoint specific functions (for example: `NewsProvider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in }`). All non-endpoint specific work goes to several callbacks that you can pass to `Provider`. For example you can pass `responseClosure` block and have ability to execute code on each response. You can use the same approach to provide auth token and save models to CoreData.
 
 # The main parts of the 5th network layer
 
-## The provider
+## The providers
 
-__The provider is the core of the layer.__ It's a instance of a class that describes all endpoints. That instance has a few callback that give you single point of access to all requests.
+__The providers are the core of the layer.__ It's a instance of a class that describes all domain-specific (like News, Transactions) endpoints. That instance has a few callback that give you single point of access to all requests.
 
 It provides to developers hight level API for access to all endpoints. It contains a bunch of functions that represent each endpoint.
 
 Example of a provider:
 
 ``` swift
-class Provider {
+class OfferProvider {
 init(endpointClosure: @escaping EndpointClosure,
                 requestClosure: @escaping RequestClosure,
                 plugins: [PluginType] = []) {}
@@ -20,17 +20,25 @@ init(endpointClosure: @escaping EndpointClosure,
     func viewOffer(offerId: Int, completion: @escaping (Result<Offer, NSError>) -> Void) -> Request {
 	    ... 
     }
+}
+
+class FacebookProvider {
+    ...
     
     func importFacebook(contacts: [String], completion: @escaping (Result<[ImportedContact], NSError>) -> Void) -> Request {
         ....
     }
+}
+
+class TransactionProvider {
+    ....
 }
 ```
 
 Example of usage:
 
 ``` swift
-let request = provider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in
+let request = NewsProvider.fetchNews(scoped: .wallet) { result: Result<[News], NSError> in
     switch result {
     case .success(news):
         print(news) // array of News
